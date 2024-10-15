@@ -3,11 +3,14 @@ import { Message } from "firebase-admin/messaging";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { readFileSync } from "fs";
+import { env } from "process";
+
 // Initialize Firebase Admin SDK
-const serviceAccount = require("../../../../service_key.json");
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
+const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '');
+// console.log(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 export async function POST(request: NextRequest) {
   const { token, title, message, link } = await request.json();
 
